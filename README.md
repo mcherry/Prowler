@@ -2,6 +2,7 @@
 Send [prowl](https://www.prowlapp.com/) notifications from the shell using cURL. 
 
 # Usage
+```
 prowler.sh [-hukaedpl]
 
 OPTIONS:
@@ -30,6 +31,7 @@ OPTIONS:
                                               1 High
                                               2 Emergency
   -l [link]        | --link [link]         A URL to be attached to the notification.
+```
 
 # API Key
 An API key is required to use this script. You can get one by logging into your account [here](https://www.prowlapp.com/).
