@@ -32,15 +32,14 @@
 #/   -l [link]        | --link [link]         A URL to be attached to the notification.
 #/
 
-function find_command() { echo `command -v $1`; }
-function show_help() { $GREP_CMD '^#/' < "$0" | cut -c4-; exit 1; }
-function echo_error() { echo "ERROR: $1"; exit 1; }
+CURL_CMD=`command -v curl`
+GREP_CMD=`command -v grep`
+TR_CMD=`command -v tr`
+SED_CMD=`command -v sed`
+CAT_CMD=`command -v cat`
 
-CURL_CMD=`find_command "curl"`
-GREP_CMD=`find_command "grep"`
-TR_CMD=`find_command "tr"`
-SED_CMD=`find_command "sed"`
-CAT_CMD=`find_command "cat"`
+function show_help() { $GREP_CMD '^#/' < "$0" | cut -c4-; }
+function echo_error() { echo "ERROR: $1"; exit 1; }
 
 if [ ! $CURL_CMD ]; then echo_error "curl command not found"; fi
 if [ ! $GREP_CMD ]; then echo_error "grep not found"; fi
@@ -96,7 +95,7 @@ while [[ $# -gt 0 ]]; do
             shift && shift
             ;;
         -*|--*)
-            show_help ;;
+            show_help && exit ;;
         *)
             ARGUMENTS+=("$1")
             shift
@@ -105,8 +104,8 @@ while [[ $# -gt 0 ]]; do
 done
 set -- "${ARGUMENTS[@]}"
 
-if [ ! $API_URL ]; then echo_error "API URL not found."; fi
-if [ ! $NOTE_DESC ]; then echo_error "Description is a required argument."; fi
+if [ ! $API_URL ]; then show_help && echo_error "API URL not found."; fi
+if [ ! $NOTE_DESC ]; then show_help && echo_error "Description is a required argument."; fi
 
 OUTPUT=`$CURL_CMD -s -d "apikey=$API_KEY&application=$NOTE_APP&event=$NOTE_EVENT&description=$NOTE_DESC&priority=$NOTE_PRIORITY&url=$NOTE_URL" -X POST "$API_URL"`
 SUCCESS=`echo "$OUTPUT"|$GREP_CMD -i success`
