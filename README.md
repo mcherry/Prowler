@@ -34,4 +34,6 @@ OPTIONS:
 ```
 
 # API Key
-An API key is required to use this script. You can get one by logging into your account [here](https://www.prowlapp.com/).
+An API key is required to use this script. You can get one by logging into your account [here](https://www.prowlapp.com/). More information on API usage can be found [here](https://www.prowlapp.com/api.php).
+
+Once you have an API key you can either specify it on the command line with the `-k` or `--key` arguments, or save it to the file `~/.prowl_api_key`.
